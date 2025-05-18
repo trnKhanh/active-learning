@@ -77,8 +77,11 @@ class ACDC(data.Dataset):
 
         self.fnames = np.array(self.fnames)
         if split in ["train", "active-label", "active-pool"]:
-            self.images = torch.stack(self.images, dim=0)
-            self.labels = torch.stack(self.labels, dim=0)
+            if len(self.images):
+                self.images = torch.stack(self.images, dim=0)
+            if len(self.labels):
+                self.labels = torch.stack(self.labels, dim=0)
+
 
 
     def __getitem__(self, index):

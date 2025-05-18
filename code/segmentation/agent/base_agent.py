@@ -99,7 +99,6 @@ class BaseTrainer(object):
             labels = labels.to(self.device, dtype=torch.long)
             bsz = images.size(0)
             data_time.update(time.time() - end)
-            self.logger.info(images.shape)
 
             # forward
             outputs = self.net(images)    # (B, C, H, W)
