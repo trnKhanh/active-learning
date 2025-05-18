@@ -1,0 +1,23 @@
+python train_al.py \
+--exp_dir exps/ACDC/al \
+--seed 1000 \
+--num_workers 0 \
+--dataset ACDC \
+--active_method random \
+--count_per_round 10 \
+--model unet_plain \
+--unet_channels 32 64 128 256 512 \
+--dropout_prob 0.1 \
+--normalization batch \
+--num_classes 4 \
+--img_size 256 \
+--optimizer adam \
+--lr_schedule poly \
+--lr 0.001 \
+--weight_decay 5e-4 \
+--train_batch_size 32 \
+--total_itrs 4000 \
+--val_mode volume \
+--val_period 1000 \
+--val_batch_size 1 \
+--device cpu 

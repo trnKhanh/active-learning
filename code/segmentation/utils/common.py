@@ -156,7 +156,10 @@ def initialization(args):
     for folder in ['active_selection', 'agent', 'dataloader', 'models', 'utils']:
         shutil.copytree(folder, osp.join(args.exp_dir, "codes", folder), ignore=ignore)
     for file in ['evaluate', 'train_sup', 'train_al']:
-        shutil.copyfile(f"{file}.py", osp.join(args.exp_dir, "codes", f"{file}.py"))
+        try:
+            shutil.copyfile(f"{file}.py", osp.join(args.exp_dir, "codes", f"{file}.py"))
+        except:
+            pass
 
     # init logger & save args
     logger = initialize_logging(args.exp_dir)

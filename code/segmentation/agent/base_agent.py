@@ -8,8 +8,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from medpy.metric import dc, asd
-from monai.losses import DiceLoss
-from monai.networks import one_hot
+from monai.losses.dice import MaskedDiceLoss as DiceLoss
+from monai.networks.utils import one_hot
 from torch.optim.lr_scheduler import LambdaLR
 
 from models import get_model
@@ -99,6 +99,7 @@ class BaseTrainer(object):
             labels = labels.to(self.device, dtype=torch.long)
             bsz = images.size(0)
             data_time.update(time.time() - end)
+            self.logger.info(images.shape)
 
             # forward
             outputs = self.net(images)    # (B, C, H, W)
@@ -118,7 +119,9 @@ class BaseTrainer(object):
                 self.scheduler.step()
 
             # logging
-            torch.cuda.synchronize()
+            if self.device == torch.device("cuda"):
+                torch.cuda.synchronize()
+
             loss_ce_meter.update(loss_ce.item(), bsz)
             loss_dice_meter.update(loss_dice.item(), bsz)
             loss_meter.update(loss.item(), bsz)

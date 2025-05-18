@@ -34,6 +34,7 @@ class DataProvider():
             total_samples_seen = total_iters * batch_size
             num_extend = int(np.ceil(total_samples_seen / len(self.dataset4loader)))
             self.dataset4loader.im_idx = dataset.im_idx * num_extend
+
         self.iteration = 0
         self.epoch = 0
 
@@ -53,14 +54,14 @@ class DataProvider():
 
     def __next__(self):
         try:
-            batch = self.dataiter.next()
+            batch = next(self.dataiter)
             self.iteration += 1
             return batch
 
         except StopIteration:
             self.epoch += 1
             self.dataiter = iter(self.dataloader)
-            batch = self.dataiter.next()
+            batch = next(self.dataiter)
             self.iteration += 1
             return batch
 
